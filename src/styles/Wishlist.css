@@ -1,0 +1,48 @@
+.wishlist-page {
+  padding: 2rem;
+}
+
+.wishlist-page h1 {
+  margin-bottom: 1.25rem;
+}
+
+.wishlist-item {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.wishlist-item img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.wishlist-item h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.wishlist-item p {
+  margin: 0.25rem 0 0;
+}
+
+.wishlist-item button {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.wishlist-item button:hover {
+  background: #000;
+}
+
