@@ -29,6 +29,4 @@ router.put("/:id", updateOrderStatus);
 // Delete Order
 router.delete("/:id", deleteOrder);
 
-
-
 export default router;

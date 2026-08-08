@@ -42,7 +42,6 @@ function MyOrdersPage() {
 
       alert(res.message);
 
-      // Refresh orders
       fetchOrders();
     } catch (error) {
       console.log(error);
@@ -96,9 +95,10 @@ function MyOrdersPage() {
               ))}
             </ul>
 
-            {/* Cancel button */}
-            {(order.status === "Pending" ||
-              order.status === "Confirmed") && (
+            {(
+              order.status === "Pending" ||
+              order.status === "Confirmed"
+            ) && (
               <button
                 onClick={() => handleCancelOrder(order._id)}
                 style={{
@@ -115,7 +115,6 @@ function MyOrdersPage() {
               </button>
             )}
 
-            {/* Cancelled message */}
             {order.status === "Cancelled" && (
               <p
                 style={{

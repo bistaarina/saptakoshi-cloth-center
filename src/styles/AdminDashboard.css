@@ -1,0 +1,533 @@
+.admin-dashboard {
+  min-height: 100vh;
+  display: flex;
+  background: #f6f7fb;
+  color: #1f2937;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.admin-sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #111827;
+  color: white;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+.admin-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  background: #c49a6c;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.admin-logo h2 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.admin-logo span {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.admin-nav {
+  margin-top: 30px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #9ca3af;
+  text-decoration: none;
+  padding: 13px 15px;
+  border-radius: 9px;
+  margin-bottom: 7px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+.nav-item.active {
+  background: #c49a6c;
+  color: white;
+}
+
+.nav-item span {
+  font-size: 17px;
+}
+
+.admin-sidebar-bottom {
+  margin-top: auto;
+  padding: 20px 10px 5px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.admin-sidebar-bottom p {
+  margin-bottom: 5px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.admin-main {
+  flex: 1;
+  padding: 35px 40px;
+  min-width: 0;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  font-size: 30px;
+  margin: 0 0 6px;
+}
+
+.admin-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 14px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #c49a6c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.admin-profile strong,
+.admin-profile span {
+  display: block;
+}
+
+.admin-profile strong {
+  font-size: 14px;
+}
+
+.admin-profile span {
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* =========================
+   STATISTICS
+========================= */
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  transition: 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+.products-icon {
+  background: #f3e8ff;
+}
+
+.orders-icon {
+  background: #dbeafe;
+}
+
+.pending-icon {
+  background: #fef3c7;
+}
+
+.sales-icon {
+  background: #dcfce7;
+}
+
+.stat-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.stat-card h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.dashboard-section {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.section-header h2 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+
+.section-header p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.view-all {
+  color: #b17f4a;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   ORDER STATUS
+========================= */
+
+.order-status-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: #eee;
+}
+
+.status-card {
+  background: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-card div span,
+.status-card div strong {
+  display: block;
+}
+
+.status-card div span {
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.status-card strong {
+  font-size: 20px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.pending {
+  background: #f59e0b;
+}
+
+.status-dot.confirmed {
+  background: #3b82f6;
+}
+
+.status-dot.shipped {
+  background: #8b5cf6;
+}
+
+.status-dot.delivered {
+  background: #22c55e;
+}
+
+.status-dot.cancelled {
+  background: #ef4444;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.orders-table-wrapper {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th {
+  background: #fafafa;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  padding: 14px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.orders-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+
+.customer-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customer-avatar {
+  width: 35px;
+  height: 35px;
+  background: #f0e3d4;
+  color: #9a6b3a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.customer-cell strong,
+.customer-cell span {
+  display: block;
+}
+
+.customer-cell span {
+  color: #9ca3af;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.order-id {
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.order-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.order-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.order-status.confirmed {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.order-status.shipped {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.order-status.delivered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.order-status.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-orders {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-orders span {
+  font-size: 35px;
+}
+
+.empty-orders h3 {
+  margin: 12px 0 5px;
+}
+
+.empty-orders p {
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.dashboard-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 35px;
+  height: 35px;
+  border: 4px solid #eee;
+  border-top-color: #c49a6c;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.dashboard-loading p {
+  color: #777;
+  margin-top: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .order-status-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .admin-sidebar {
+    width: 70px;
+    padding: 20px 10px;
+  }
+
+  .admin-logo div:not(.logo-icon),
+  .nav-item:not(.active)::after,
+  .nav-item {
+    font-size: 0;
+  }
+
+  .nav-item span {
+    font-size: 18px;
+  }
+
+  .admin-sidebar-bottom {
+    display: none;
+  }
+
+  .admin-main {
+    padding: 25px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-status-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-header {
+    align-items: flex-start;
+  }
+
+  .admin-profile {
+    display: none;
+  }
+
+  .admin-main {
+    padding: 20px 15px;
+  }
+
+  .admin-header h1 {
+    font-size: 25px;
+  }
+}
