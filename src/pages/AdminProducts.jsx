@@ -11,8 +11,14 @@ function AdminProducts() {
   const [products, setProducts] = useState([]);
 
   const [showForm, setShowForm] = useState(false);
-
   const [editingId, setEditingId] = useState(null);
+
+  // Search and filters
+  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
+
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [stockFilter, setStockFilter] = useState("All");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,6 +42,7 @@ function AdminProducts() {
     }
   };
 
+  // Handle form input
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -45,6 +52,7 @@ function AdminProducts() {
     });
   };
 
+  // Reset form
   const resetForm = () => {
     setFormData({
       name: "",
@@ -59,6 +67,7 @@ function AdminProducts() {
     setShowForm(false);
   };
 
+  // Add / Update product
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -80,7 +89,6 @@ function AdminProducts() {
       }
 
       resetForm();
-
       fetchProducts();
     } catch (error) {
       console.error(error);
@@ -92,6 +100,7 @@ function AdminProducts() {
     }
   };
 
+  // Edit product
   const handleEdit = (product) => {
     setEditingId(product._id);
 
@@ -112,6 +121,7 @@ function AdminProducts() {
     });
   };
 
+  // Delete product
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
@@ -137,11 +147,63 @@ function AdminProducts() {
     }
   };
 
+  // Search
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    setSearch(searchText.trim().toLowerCase());
+  };
+
+  // Filter products
+  const filteredProducts = products.filter((product) => {
+    const productName =
+      product.name?.toLowerCase() || "";
+
+    const productCategory =
+      product.category?.toLowerCase() || "";
+
+    const productDescription =
+      product.description?.toLowerCase() || "";
+
+    // Search by name, category or description
+    const matchesSearch =
+      search === "" ||
+      productName.includes(search) ||
+      productCategory.includes(search) ||
+      productDescription.includes(search);
+
+    // Category filter
+    const matchesCategory =
+      categoryFilter === "All" ||
+      product.category === categoryFilter;
+
+    // Stock filter
+    let matchesStock = true;
+
+    if (stockFilter === "In Stock") {
+      matchesStock = product.stock > 5;
+    }
+
+    if (stockFilter === "Low Stock") {
+      matchesStock =
+        product.stock > 0 && product.stock <= 5;
+    }
+
+    if (stockFilter === "Out of Stock") {
+      matchesStock = product.stock === 0;
+    }
+
+    return (
+      matchesSearch &&
+      matchesCategory &&
+      matchesStock
+    );
+  });
+
   return (
     <div className="admin-products-page">
 
       {/* Header */}
-
       <div className="products-page-header">
 
         <div>
@@ -162,17 +224,19 @@ function AdminProducts() {
             }
           }}
         >
-          {showForm ? "Close Form" : "+ Add Product"}
+          {showForm
+            ? "Close Form"
+            : "+ Add Product"}
         </button>
 
       </div>
 
       {/* Product Form */}
-
       {showForm && (
         <div className="product-form-card">
 
           <div className="form-header">
+
             <h2>
               {editingId
                 ? "Edit Product"
@@ -182,6 +246,7 @@ function AdminProducts() {
             <p>
               Enter the product information below.
             </p>
+
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -189,7 +254,6 @@ function AdminProducts() {
             <div className="form-grid">
 
               {/* Product Name */}
-
               <div className="form-group">
 
                 <label>Product Name</label>
@@ -206,7 +270,6 @@ function AdminProducts() {
               </div>
 
               {/* Price */}
-
               <div className="form-group">
 
                 <label>Price</label>
@@ -224,7 +287,6 @@ function AdminProducts() {
               </div>
 
               {/* Category */}
-
               <div className="form-group">
 
                 <label>Category</label>
@@ -252,7 +314,6 @@ function AdminProducts() {
               </div>
 
               {/* Stock */}
-
               <div className="form-group">
 
                 <label>Stock</label>
@@ -270,7 +331,6 @@ function AdminProducts() {
               </div>
 
               {/* Image */}
-
               <div className="form-group full-width">
 
                 <label>Product Image URL</label>
@@ -287,7 +347,6 @@ function AdminProducts() {
               </div>
 
               {/* Description */}
-
               <div className="form-group full-width">
 
                 <label>Description</label>
@@ -330,23 +389,121 @@ function AdminProducts() {
         </div>
       )}
 
-      {/* Products */}
-
+      {/* Products Section */}
       <div className="products-section">
 
         <div className="products-section-header">
 
           <div>
+
             <h2>All Products</h2>
 
             <span>
+              Showing {filteredProducts.length} of{" "}
               {products.length} products
             </span>
+
           </div>
 
         </div>
 
-        {products.length === 0 ? (
+        {/* Search and Filters */}
+        <div className="product-filters">
+
+          {/* Search Form */}
+          <form
+            onSubmit={handleSearch}
+            className="product-search-form"
+          >
+
+            <input
+              type="text"
+              className="product-search"
+              placeholder="🔎 Search products..."
+              value={searchText}
+              onChange={(e) =>
+                setSearchText(e.target.value)
+              }
+            />
+
+            <button type="submit">
+              Search
+            </button>
+
+          </form>
+
+          {/* Category Filter */}
+          <select
+            value={categoryFilter}
+            onChange={(e) =>
+              setCategoryFilter(e.target.value)
+            }
+            className="product-filter-select"
+          >
+
+            <option value="All">
+              All Categories
+            </option>
+
+            <option value="Women">
+              Women
+            </option>
+
+            <option value="Men">
+              Men
+            </option>
+
+            <option value="Bedding">
+              Bedding
+            </option>
+
+          </select>
+
+          {/* Stock Filter */}
+          <select
+            value={stockFilter}
+            onChange={(e) =>
+              setStockFilter(e.target.value)
+            }
+            className="product-filter-select"
+          >
+
+            <option value="All">
+              All Stock
+            </option>
+
+            <option value="In Stock">
+              In Stock
+            </option>
+
+            <option value="Low Stock">
+              Low Stock
+            </option>
+
+            <option value="Out of Stock">
+              Out of Stock
+            </option>
+
+          </select>
+
+          {/* Clear Filters */}
+          <button
+            type="button"
+            className="clear-filter-btn"
+            onClick={() => {
+              setSearchText("");
+              setSearch("");
+              setCategoryFilter("All");
+              setStockFilter("All");
+            }}
+          >
+            Clear
+          </button>
+
+        </div>
+
+        {/* Products */}
+        {filteredProducts.length === 0 ? (
 
           <div className="empty-products">
 
@@ -355,7 +512,7 @@ function AdminProducts() {
             <h3>No products found</h3>
 
             <p>
-              Add your first product to get started.
+              Try changing your search or filters.
             </p>
 
           </div>
@@ -380,10 +537,11 @@ function AdminProducts() {
 
               <tbody>
 
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
 
                   <tr key={product._id}>
 
+                    {/* Product */}
                     <td>
 
                       <div className="product-table-info">
@@ -414,21 +572,28 @@ function AdminProducts() {
 
                     </td>
 
+                    {/* Category */}
                     <td>
+
                       <span className="category-badge">
                         {product.category}
                       </span>
+
                     </td>
 
+                    {/* Price */}
                     <td>
+
                       <strong>
                         Rs.{" "}
                         {Number(
                           product.price
                         ).toLocaleString()}
                       </strong>
+
                     </td>
 
+                    {/* Stock */}
                     <td>
 
                       <span
@@ -440,18 +605,24 @@ function AdminProducts() {
                             : "available"
                         }`}
                       >
+
                         {product.stock === 0
                           ? "Out of Stock"
-                          : product.stock}
+                          : product.stock <= 5
+                          ? `Low: ${product.stock}`
+                          : `Available: ${product.stock}`}
+
                       </span>
 
                     </td>
 
+                    {/* Actions */}
                     <td>
 
                       <div className="product-actions">
 
                         <button
+                          type="button"
                           className="edit-btn"
                           onClick={() =>
                             handleEdit(product)
@@ -461,6 +632,7 @@ function AdminProducts() {
                         </button>
 
                         <button
+                          type="button"
                           className="delete-btn"
                           onClick={() =>
                             handleDelete(

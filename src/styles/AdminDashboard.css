@@ -1,3 +1,7 @@
+/* ========================================
+   ADMIN DASHBOARD
+======================================== */
+
 .admin-dashboard {
   min-height: 100vh;
   display: flex;
@@ -5,9 +9,10 @@
   color: #1f2937;
 }
 
-/* =========================
+
+/* ========================================
    SIDEBAR
-========================= */
+======================================== */
 
 .admin-sidebar {
   width: 250px;
@@ -19,6 +24,7 @@
   flex-direction: column;
   position: sticky;
   top: 0;
+  box-sizing: border-box;
 }
 
 .admin-logo {
@@ -90,17 +96,19 @@
 }
 
 .admin-sidebar-bottom p {
-  margin-bottom: 5px;
+  margin: 0 0 5px;
 }
 
-/* =========================
-   MAIN
-========================= */
+
+/* ========================================
+   MAIN CONTENT
+======================================== */
 
 .admin-main {
   flex: 1;
   padding: 35px 40px;
   min-width: 0;
+  box-sizing: border-box;
 }
 
 .admin-header {
@@ -154,9 +162,10 @@
   margin-top: 3px;
 }
 
-/* =========================
+
+/* ========================================
    STATISTICS
-========================= */
+======================================== */
 
 .statistics-grid {
   display: grid;
@@ -189,6 +198,7 @@
   align-items: center;
   justify-content: center;
   font-size: 21px;
+  flex-shrink: 0;
 }
 
 .products-icon {
@@ -219,9 +229,10 @@
   font-size: 24px;
 }
 
-/* =========================
-   SECTIONS
-========================= */
+
+/* ========================================
+   GENERAL SECTIONS
+======================================== */
 
 .dashboard-section {
   background: white;
@@ -257,9 +268,124 @@
   font-weight: 600;
 }
 
-/* =========================
+.view-all:hover {
+  color: #8f6338;
+}
+
+
+/* ========================================
+   INVENTORY OVERVIEW
+======================================== */
+
+.inventory-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #eeeeee;
+}
+
+.inventory-dashboard-card {
+  background: white;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: 0.2s ease;
+}
+
+.inventory-dashboard-card:hover {
+  background: #fafafa;
+}
+
+.inventory-dashboard-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: #f7f1eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+.inventory-dashboard-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.inventory-dashboard-card strong {
+  display: block;
+  font-size: 21px;
+  color: #1f2937;
+}
+
+
+/* ========================================
+   INVENTORY ALERT
+======================================== */
+
+.inventory-alert-section {
+  margin-bottom: 25px;
+  padding: 18px 22px;
+  border: 1px solid #f3d58b;
+  border-radius: 14px;
+  background: #fffbeb;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.inventory-alert-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.inventory-alert-content {
+  flex: 1;
+}
+
+.inventory-alert-content h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: #92400e;
+}
+
+.inventory-alert-content p {
+  margin: 0;
+  color: #a16207;
+  font-size: 13px;
+}
+
+.inventory-alert-button {
+  background: #c49a6c;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.inventory-alert-button:hover {
+  background: #a97d4f;
+}
+
+
+/* ========================================
    ORDER STATUS
-========================= */
+======================================== */
 
 .order-status-grid {
   display: grid;
@@ -295,6 +421,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .status-dot.pending {
@@ -317,9 +444,10 @@
   background: #ef4444;
 }
 
-/* =========================
-   TABLE
-========================= */
+
+/* ========================================
+   ORDERS TABLE
+======================================== */
 
 .orders-table-wrapper {
   overflow-x: auto;
@@ -338,12 +466,22 @@
   text-align: left;
   padding: 14px 20px;
   border-bottom: 1px solid #eee;
+  white-space: nowrap;
 }
 
 .orders-table td {
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f0;
   font-size: 13px;
+  vertical-align: middle;
+}
+
+.orders-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.orders-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .customer-cell {
@@ -362,11 +500,16 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .customer-cell strong,
 .customer-cell span {
   display: block;
+}
+
+.customer-cell strong {
+  font-size: 13px;
 }
 
 .customer-cell span {
@@ -378,6 +521,7 @@
 .order-id {
   color: #6b7280;
   font-family: monospace;
+  font-size: 12px;
 }
 
 .order-status {
@@ -386,6 +530,7 @@
   border-radius: 20px;
   font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .order-status.pending {
@@ -413,9 +558,10 @@
   color: #b91c1c;
 }
 
-/* =========================
+
+/* ========================================
    EMPTY STATE
-========================= */
+======================================== */
 
 .empty-orders {
   text-align: center;
@@ -435,9 +581,10 @@
   margin: 0;
 }
 
-/* =========================
+
+/* ========================================
    LOADING
-========================= */
+======================================== */
 
 .dashboard-loading {
   min-height: 100vh;
@@ -445,6 +592,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: #f6f7fb;
 }
 
 .loading-spinner {
@@ -456,9 +604,13 @@
   animation: spin 0.8s linear infinite;
 }
 
+.dashboard-loading h3 {
+  margin: 15px 0 0;
+}
+
 .dashboard-loading p {
   color: #777;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 @keyframes spin {
@@ -467,12 +619,17 @@
   }
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 
-@media (max-width: 1100px) {
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1200px) {
   .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .inventory-dashboard-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -481,15 +638,25 @@
   }
 }
 
-@media (max-width: 800px) {
+
+@media (max-width: 900px) {
   .admin-sidebar {
-    width: 70px;
+    width: 75px;
     padding: 20px 10px;
   }
 
-  .admin-logo div:not(.logo-icon),
-  .nav-item:not(.active)::after,
+  .admin-logo {
+    justify-content: center;
+    padding: 0 0 25px;
+  }
+
+  .admin-logo > div:not(.logo-icon) {
+    display: none;
+  }
+
   .nav-item {
+    justify-content: center;
+    padding: 13px 8px;
     font-size: 0;
   }
 
@@ -506,8 +673,13 @@
   }
 }
 
-@media (max-width: 600px) {
+
+@media (max-width: 650px) {
   .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inventory-dashboard-grid {
     grid-template-columns: 1fr;
   }
 
@@ -529,5 +701,51 @@
 
   .admin-header h1 {
     font-size: 25px;
+  }
+
+  .section-header {
+    padding: 18px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+  }
+
+  .inventory-alert-section {
+    flex-wrap: wrap;
+    padding: 18px;
+  }
+
+  .inventory-alert-content {
+    min-width: 180px;
+  }
+
+  .inventory-alert-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 12px 14px;
+  }
+}
+
+
+@media (max-width: 450px) {
+  .order-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-main {
+    padding: 18px 12px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .inventory-dashboard-card {
+    padding: 18px;
   }
 }

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { getOrders } from "../api/orderApi";
 import API from "../api/api";
 import "../styles/AdminDashboard.css";
 
 function AdminDashboard() {
+  const location = useLocation();
+
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +31,10 @@ function AdminDashboard() {
     }
   };
 
+  // =========================
+  // ORDER STATISTICS
+  // =========================
+
   const pendingOrders = orders.filter(
     (order) => order.status === "Pending"
   ).length;
@@ -48,20 +55,51 @@ function AdminDashboard() {
     (order) => order.status === "Cancelled"
   ).length;
 
+  // =========================
+  // SALES
+  // =========================
+
   const totalSales = orders
     .filter((order) => order.status !== "Cancelled")
     .reduce(
-      (sum, order) => sum + Number(order.total || 0),
+      (sum, order) =>
+        sum + Number(order.total || 0),
       0
     );
 
+  // =========================
+  // INVENTORY STATISTICS
+  // =========================
+
+  const totalProducts = products.length;
+
+  const inStockProducts = products.filter(
+    (product) => Number(product.stock) > 5
+  ).length;
+
+  const lowStockProducts = products.filter(
+    (product) =>
+      Number(product.stock) > 0 &&
+      Number(product.stock) <= 5
+  ).length;
+
+  const outOfStockProducts = products.filter(
+    (product) => Number(product.stock) === 0
+  ).length;
+
+  // Recent orders
   const recentOrders = orders.slice(0, 5);
+
+  // =========================
+  // LOADING
+  // =========================
 
   if (loading) {
     return (
       <div className="dashboard-loading">
         <div className="loading-spinner"></div>
-        <p>Loading dashboard...</p>
+        <h3>Loading dashboard...</h3>
+        <p>Please wait while we load your store data.</p>
       </div>
     );
   }
@@ -69,39 +107,70 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard">
 
-      {/* Sidebar */}
+      {/* =========================
+          SIDEBAR
+      ========================= */}
+
       <aside className="admin-sidebar">
 
         <div className="admin-logo">
-          <div className="logo-icon">S</div>
+
+          <div className="logo-icon">
+            S
+          </div>
 
           <div>
             <h2>Saptakoshi</h2>
             <span>Cloth Center</span>
           </div>
+
         </div>
 
         <nav className="admin-nav">
 
-          <a href="/admin" className="nav-item active">
+          <Link
+            to="/admin"
+            className={`nav-item ${
+              location.pathname === "/admin"
+                ? "active"
+                : ""
+            }`}
+          >
             <span>📊</span>
             Dashboard
-          </a>
+          </Link>
 
-          <a href="/admin/orders" className="nav-item">
+          <Link
+            to="/admin/orders"
+            className={`nav-item ${
+              location.pathname === "/admin/orders"
+                ? "active"
+                : ""
+            }`}
+          >
             <span>📦</span>
             Orders
-          </a>
+          </Link>
 
-          <a href="/admin/products" className="nav-item">
+          <Link
+            to="/admin/products"
+            className={`nav-item ${
+              location.pathname === "/admin/products"
+                ? "active"
+                : ""
+            }`}
+          >
             <span>🛍️</span>
             Products
-          </a>
+          </Link>
 
-          <a href="/shop" className="nav-item">
+          <Link
+            to="/shop"
+            className="nav-item"
+          >
             <span>🌐</span>
             View Store
-          </a>
+          </Link>
 
         </nav>
 
@@ -112,240 +181,634 @@ function AdminDashboard() {
 
       </aside>
 
-      {/* Main Content */}
+      {/* =========================
+          MAIN CONTENT
+      ========================= */}
+
       <main className="admin-main">
 
-        {/* Header */}
+        {/* HEADER */}
+
         <header className="admin-header">
 
           <div>
             <h1>Dashboard</h1>
+
             <p>
-              Overview of your store performance and orders.
+              Overview of your store performance
+              and orders.
             </p>
           </div>
 
           <div className="admin-profile">
+
             <div className="admin-avatar">
               A
             </div>
 
             <div>
-              <strong>Administrator</strong>
-              <span>Store Admin</span>
+              <strong>
+                Administrator
+              </strong>
+
+              <span>
+                Store Admin
+              </span>
             </div>
+
           </div>
 
         </header>
 
-        {/* Statistics */}
+        {/* =========================
+            MAIN STATISTICS
+        ========================= */}
+
         <section className="statistics-grid">
 
+          {/* PRODUCTS */}
+
           <div className="stat-card">
+
             <div className="stat-icon products-icon">
               🛍️
             </div>
 
             <div>
-              <span>Total Products</span>
-              <h2>{products.length}</h2>
+
+              <span>
+                Total Products
+              </span>
+
+              <h2>
+                {totalProducts}
+              </h2>
+
             </div>
+
           </div>
 
+          {/* ORDERS */}
+
           <div className="stat-card">
+
             <div className="stat-icon orders-icon">
               📦
             </div>
 
             <div>
-              <span>Total Orders</span>
-              <h2>{orders.length}</h2>
+
+              <span>
+                Total Orders
+              </span>
+
+              <h2>
+                {orders.length}
+              </h2>
+
             </div>
+
           </div>
 
+          {/* PENDING */}
+
           <div className="stat-card">
+
             <div className="stat-icon pending-icon">
               ⏳
             </div>
 
             <div>
-              <span>Pending Orders</span>
-              <h2>{pendingOrders}</h2>
+
+              <span>
+                Pending Orders
+              </span>
+
+              <h2>
+                {pendingOrders}
+              </h2>
+
             </div>
+
           </div>
 
+          {/* SALES */}
+
           <div className="stat-card">
+
             <div className="stat-icon sales-icon">
               💰
             </div>
 
             <div>
-              <span>Total Sales</span>
+
+              <span>
+                Total Sales
+              </span>
+
               <h2>
-                Rs. {totalSales.toLocaleString()}
+                Rs.{" "}
+                {totalSales.toLocaleString()}
               </h2>
+
             </div>
+
           </div>
 
         </section>
 
-        {/* Order Overview */}
+        {/* =========================
+            INVENTORY OVERVIEW
+        ========================= */}
+
         <section className="dashboard-section">
 
           <div className="section-header">
+
             <div>
-              <h2>Order Overview</h2>
-              <p>Current order status summary</p>
+
+              <h2>
+                Inventory Overview
+              </h2>
+
+              <p>
+                Current product stock status
+              </p>
+
             </div>
+
+            <Link
+              to="/admin/products"
+              className="view-all"
+            >
+              Manage Products →
+            </Link>
+
+          </div>
+
+          <div className="inventory-dashboard-grid">
+
+            {/* TOTAL */}
+
+            <div className="inventory-dashboard-card">
+
+              <div className="inventory-dashboard-icon">
+                🛍️
+              </div>
+
+              <div>
+
+                <span>
+                  Total Products
+                </span>
+
+                <strong>
+                  {totalProducts}
+                </strong>
+
+              </div>
+
+            </div>
+
+            {/* IN STOCK */}
+
+            <div className="inventory-dashboard-card">
+
+              <div className="inventory-dashboard-icon">
+                🟢
+              </div>
+
+              <div>
+
+                <span>
+                  In Stock
+                </span>
+
+                <strong>
+                  {inStockProducts}
+                </strong>
+
+              </div>
+
+            </div>
+
+            {/* LOW STOCK */}
+
+            <div className="inventory-dashboard-card">
+
+              <div className="inventory-dashboard-icon">
+                🟡
+              </div>
+
+              <div>
+
+                <span>
+                  Low Stock
+                </span>
+
+                <strong>
+                  {lowStockProducts}
+                </strong>
+
+              </div>
+
+            </div>
+
+            {/* OUT OF STOCK */}
+
+            <div className="inventory-dashboard-card">
+
+              <div className="inventory-dashboard-icon">
+                🔴
+              </div>
+
+              <div>
+
+                <span>
+                  Out of Stock
+                </span>
+
+                <strong>
+                  {outOfStockProducts}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* =========================
+            INVENTORY ALERT
+        ========================= */}
+
+        {(lowStockProducts > 0 ||
+          outOfStockProducts > 0) && (
+
+          <section className="inventory-alert-section">
+
+            <div className="inventory-alert-icon">
+              ⚠️
+            </div>
+
+            <div className="inventory-alert-content">
+
+              <h3>
+                Inventory Attention Required
+              </h3>
+
+              <p>
+
+                {lowStockProducts > 0 && (
+                  <>
+                    {lowStockProducts}{" "}
+                    {lowStockProducts === 1
+                      ? "product is"
+                      : "products are"}{" "}
+                    running low on stock.
+                  </>
+                )}
+
+                {lowStockProducts > 0 &&
+                  outOfStockProducts > 0 && (
+                    <> </>  
+                  )}
+
+                {outOfStockProducts > 0 && (
+                  <>
+                    {outOfStockProducts}{" "}
+                    {outOfStockProducts === 1
+                      ? "product is"
+                      : "products are"}{" "}
+                    out of stock.
+                  </>
+                )}
+
+              </p>
+
+            </div>
+
+            <Link
+              to="/admin/products"
+              className="inventory-alert-button"
+            >
+              Manage Inventory
+            </Link>
+
+          </section>
+
+        )}
+
+        {/* =========================
+            ORDER OVERVIEW
+        ========================= */}
+
+        <section className="dashboard-section">
+
+          <div className="section-header">
+
+            <div>
+
+              <h2>
+                Order Overview
+              </h2>
+
+              <p>
+                Current order status summary
+              </p>
+
+            </div>
+
           </div>
 
           <div className="order-status-grid">
 
+            {/* PENDING */}
+
             <div className="status-card">
+
               <span className="status-dot pending"></span>
+
               <div>
-                <span>Pending</span>
-                <strong>{pendingOrders}</strong>
+                <span>
+                  Pending
+                </span>
+
+                <strong>
+                  {pendingOrders}
+                </strong>
               </div>
+
             </div>
 
+            {/* CONFIRMED */}
+
             <div className="status-card">
+
               <span className="status-dot confirmed"></span>
+
               <div>
-                <span>Confirmed</span>
-                <strong>{confirmedOrders}</strong>
+
+                <span>
+                  Confirmed
+                </span>
+
+                <strong>
+                  {confirmedOrders}
+                </strong>
+
               </div>
+
             </div>
 
+            {/* SHIPPED */}
+
             <div className="status-card">
+
               <span className="status-dot shipped"></span>
+
               <div>
-                <span>Shipped</span>
-                <strong>{shippedOrders}</strong>
+
+                <span>
+                  Shipped
+                </span>
+
+                <strong>
+                  {shippedOrders}
+                </strong>
+
               </div>
+
             </div>
 
+            {/* DELIVERED */}
+
             <div className="status-card">
+
               <span className="status-dot delivered"></span>
+
               <div>
-                <span>Delivered</span>
-                <strong>{deliveredOrders}</strong>
+
+                <span>
+                  Delivered
+                </span>
+
+                <strong>
+                  {deliveredOrders}
+                </strong>
+
               </div>
+
             </div>
 
+            {/* CANCELLED */}
+
             <div className="status-card">
+
               <span className="status-dot cancelled"></span>
+
               <div>
-                <span>Cancelled</span>
-                <strong>{cancelledOrders}</strong>
+
+                <span>
+                  Cancelled
+                </span>
+
+                <strong>
+                  {cancelledOrders}
+                </strong>
+
               </div>
+
             </div>
 
           </div>
 
         </section>
 
-        {/* Recent Orders */}
+        {/* =========================
+            RECENT ORDERS
+        ========================= */}
+
         <section className="dashboard-section">
 
           <div className="section-header">
 
             <div>
-              <h2>Recent Orders</h2>
-              <p>Latest customer orders</p>
+
+              <h2>
+                Recent Orders
+              </h2>
+
+              <p>
+                Latest customer orders
+              </p>
+
             </div>
 
-            <a href="/admin/orders" className="view-all">
+            <Link
+              to="/admin/orders"
+              className="view-all"
+            >
               View All →
-            </a>
+            </Link>
 
           </div>
 
           {recentOrders.length === 0 ? (
+
             <div className="empty-orders">
-              <span>📦</span>
-              <h3>No orders yet</h3>
+
+              <span>
+                📦
+              </span>
+
+              <h3>
+                No orders yet
+              </h3>
+
               <p>
                 Customer orders will appear here.
               </p>
+
             </div>
+
           ) : (
+
             <div className="orders-table-wrapper">
 
               <table className="orders-table">
 
                 <thead>
+
                   <tr>
-                    <th>Customer</th>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                    <th>Status</th>
+
+                    <th>
+                      Customer
+                    </th>
+
+                    <th>
+                      Order ID
+                    </th>
+
+                    <th>
+                      Date
+                    </th>
+
+                    <th>
+                      Total
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
                   </tr>
+
                 </thead>
 
                 <tbody>
 
-                  {recentOrders.map((order) => (
-                    <tr key={order._id}>
+                  {recentOrders.map(
+                    (order) => (
 
-                      <td>
-                        <div className="customer-cell">
-                          <div className="customer-avatar">
-                            {order.customerName
-                              ?.charAt(0)
-                              .toUpperCase()}
+                      <tr key={order._id}>
+
+                        {/* CUSTOMER */}
+
+                        <td>
+
+                          <div className="customer-cell">
+
+                            <div className="customer-avatar">
+
+                              {order.customerName
+                                ?.charAt(0)
+                                .toUpperCase()}
+
+                            </div>
+
+                            <div>
+
+                              <strong>
+                                {order.customerName}
+                              </strong>
+
+                              <span>
+                                {order.email}
+                              </span>
+
+                            </div>
+
                           </div>
 
-                          <div>
-                            <strong>
-                              {order.customerName}
-                            </strong>
+                        </td>
 
-                            <span>
-                              {order.email}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
+                        {/* ORDER ID */}
 
-                      <td>
-                        <span className="order-id">
-                          #{order._id.slice(-6)}
-                        </span>
-                      </td>
+                        <td>
 
-                      <td>
-                        {new Date(
-                          order.createdAt
-                        ).toLocaleDateString()}
-                      </td>
+                          <span className="order-id">
+                            #
+                            {order._id.slice(-6)}
+                          </span>
 
-                      <td>
-                        <strong>
-                          Rs.{" "}
-                          {Number(
-                            order.total
-                          ).toLocaleString()}
-                        </strong>
-                      </td>
+                        </td>
 
-                      <td>
-                        <span
-                          className={`order-status ${order.status.toLowerCase()}`}
-                        >
-                          {order.status}
-                        </span>
-                      </td>
+                        {/* DATE */}
 
-                    </tr>
-                  ))}
+                        <td>
+
+                          {new Date(
+                            order.createdAt
+                          ).toLocaleDateString()}
+
+                        </td>
+
+                        {/* TOTAL */}
+
+                        <td>
+
+                          <strong>
+                            Rs.{" "}
+                            {Number(
+                              order.total || 0
+                            ).toLocaleString()}
+                          </strong>
+
+                        </td>
+
+                        {/* STATUS */}
+
+                        <td>
+
+                          <span
+                            className={`order-status ${
+                              order.status
+                                ?.toLowerCase()
+                                .replace(
+                                  /\s+/g,
+                                  "-"
+                                )
+                            }`}
+                          >
+                            {order.status}
+                          </span>
+
+                        </td>
+
+                      </tr>
+
+                    )
+                  )}
 
                 </tbody>
 
               </table>
 
             </div>
+
           )}
 
         </section>
