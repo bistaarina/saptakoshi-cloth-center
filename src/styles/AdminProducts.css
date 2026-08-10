@@ -1,10 +1,17 @@
+/* ========================================
+   ADMIN PRODUCTS PAGE
+======================================== */
+
 .admin-products-page {
   min-height: 100vh;
   padding: 35px 40px;
   background: #f6f7fb;
+  color: #1f2937;
 }
 
-/* Header */
+/* ========================================
+   HEADER
+======================================== */
 
 .products-page-header {
   display: flex;
@@ -25,6 +32,8 @@
   font-size: 14px;
 }
 
+/* Add Product Button */
+
 .add-product-btn {
   background: #c49a6c;
   color: white;
@@ -34,13 +43,17 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .add-product-btn:hover {
   background: #ad8357;
+  transform: translateY(-1px);
 }
 
-/* Form */
+/* ========================================
+   PRODUCT FORM
+======================================== */
 
 .product-form-card {
   background: white;
@@ -48,6 +61,7 @@
   border-radius: 14px;
   padding: 25px;
   margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .form-header {
@@ -57,6 +71,7 @@
 .form-header h2 {
   margin: 0 0 5px;
   font-size: 20px;
+  color: #1f2937;
 }
 
 .form-header p {
@@ -90,23 +105,32 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid #d1d5db;
   border-radius: 7px;
   padding: 11px 12px;
   font-size: 13px;
   outline: none;
   font-family: inherit;
+  background: white;
+  color: #374151;
+  transition: 0.2s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: #c49a6c;
+  box-shadow: 0 0 0 3px rgba(196, 154, 108, 0.12);
 }
 
 .form-group textarea {
   resize: vertical;
+  min-height: 100px;
 }
+
+/* Form Buttons */
 
 .form-actions {
   display: flex;
@@ -122,12 +146,17 @@
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
+  transition: 0.2s ease;
 }
 
 .cancel-form-btn {
   border: 1px solid #d1d5db;
   background: white;
   color: #4b5563;
+}
+
+.cancel-form-btn:hover {
+  background: #f9fafb;
 }
 
 .save-product-btn {
@@ -138,15 +167,19 @@
 
 .save-product-btn:hover {
   background: #ad8357;
+  transform: translateY(-1px);
 }
 
-/* Products Section */
+/* ========================================
+   PRODUCTS SECTION
+======================================== */
 
 .products-section {
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .products-section-header {
@@ -157,6 +190,7 @@
 .products-section-header h2 {
   margin: 0 0 5px;
   font-size: 18px;
+  color: #1f2937;
 }
 
 .products-section-header span {
@@ -164,14 +198,103 @@
   font-size: 12px;
 }
 
-/* Table */
+/* ========================================
+   SEARCH & FILTERS
+======================================== */
+
+.product-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.product-search-form {
+  display: flex;
+  flex: 1;
+  min-width: 250px;
+  gap: 8px;
+}
+
+.product-search {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  outline: none;
+  font-size: 13px;
+  background: white;
+  transition: 0.2s ease;
+}
+
+.product-search:focus {
+  border-color: #c49a6c;
+  box-shadow: 0 0 0 3px rgba(196, 154, 108, 0.12);
+}
+
+.product-search-form button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #c49a6c;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.product-search-form button:hover {
+  background: #ad8357;
+}
+
+.product-filter-select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: white;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+
+.product-filter-select:focus {
+  border-color: #c49a6c;
+}
+
+.clear-filter-btn {
+  padding: 10px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: white;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.clear-filter-btn:hover {
+  background: #f3f4f6;
+}
+
+/* ========================================
+   PRODUCTS TABLE
+======================================== */
 
 .products-table-wrapper {
+  width: 100%;
   overflow-x: auto;
 }
 
 .products-table {
   width: 100%;
+  min-width: 750px;
   border-collapse: collapse;
 }
 
@@ -183,15 +306,27 @@
   font-size: 12px;
   font-weight: 600;
   border-bottom: 1px solid #eee;
+  white-space: nowrap;
 }
 
 .products-table td {
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f0;
   font-size: 13px;
+  vertical-align: middle;
 }
 
-/* Product */
+.products-table tbody tr {
+  transition: 0.15s ease;
+}
+
+.products-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* ========================================
+   PRODUCT INFORMATION
+======================================== */
 
 .product-table-info {
   display: flex;
@@ -206,6 +341,7 @@
   object-fit: cover;
   border-radius: 8px;
   background: #f5f5f5;
+  border: 1px solid #eee;
 }
 
 .product-table-info strong,
@@ -215,24 +351,33 @@
 
 .product-table-info strong {
   margin-bottom: 5px;
+  color: #374151;
+  font-size: 13px;
 }
 
 .product-table-info span {
   color: #9ca3af;
   font-size: 11px;
+  line-height: 1.4;
 }
 
-/* Category */
+/* ========================================
+   CATEGORY
+======================================== */
 
 .category-badge {
+  display: inline-block;
   background: #f3f4f6;
   color: #4b5563;
   padding: 5px 9px;
   border-radius: 5px;
   font-size: 11px;
+  font-weight: 600;
 }
 
-/* Stock */
+/* ========================================
+   STOCK
+======================================== */
 
 .stock-badge {
   display: inline-block;
@@ -240,6 +385,7 @@
   border-radius: 5px;
   font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .stock-badge.available {
@@ -257,7 +403,9 @@
   color: #b91c1c;
 }
 
-/* Actions */
+/* ========================================
+   ACTION BUTTONS
+======================================== */
 
 .product-actions {
   display: flex;
@@ -272,6 +420,7 @@
   cursor: pointer;
   font-size: 11px;
   font-weight: 600;
+  transition: 0.2s ease;
 }
 
 .edit-btn {
@@ -292,7 +441,9 @@
   background: #fecaca;
 }
 
-/* Empty */
+/* ========================================
+   EMPTY STATE
+======================================== */
 
 .empty-products {
   text-align: center;
@@ -305,14 +456,37 @@
 
 .empty-products h3 {
   margin: 12px 0 5px;
+  color: #374151;
 }
 
 .empty-products p {
   color: #9ca3af;
   margin: 0;
+  font-size: 13px;
 }
 
-/* Responsive */
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1000px) {
+  .admin-products-page {
+    padding: 30px 25px;
+  }
+
+  .product-filters {
+    align-items: stretch;
+  }
+
+  .product-search-form {
+    flex-basis: 100%;
+  }
+
+  .product-filter-select,
+  .clear-filter-btn {
+    flex: 1;
+  }
+}
 
 @media (max-width: 800px) {
   .admin-products-page {
@@ -321,10 +495,16 @@
 
   .products-page-header {
     align-items: flex-start;
+    gap: 15px;
   }
 
   .products-page-header h1 {
     font-size: 25px;
+  }
+
+  .add-product-btn {
+    padding: 10px 15px;
+    white-space: nowrap;
   }
 
   .form-grid {
@@ -333,5 +513,51 @@
 
   .form-group.full-width {
     grid-column: span 1;
+  }
+
+  .product-form-card {
+    padding: 20px;
+  }
+
+  .products-section-header {
+    padding: 20px;
+  }
+
+  .product-filters {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-product-btn {
+    width: 100%;
+  }
+
+  .product-search-form {
+    flex-direction: column;
+  }
+
+  .product-search-form button {
+    width: 100%;
+  }
+
+  .product-filter-select,
+  .clear-filter-btn {
+    width: 100%;
+    flex: none;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-form-btn,
+  .save-product-btn {
+    width: 100%;
   }
 }

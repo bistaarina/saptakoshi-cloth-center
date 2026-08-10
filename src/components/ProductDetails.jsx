@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getProductById } from "../api/productApi";
 import "../styles/ProductDetails.css";
 
@@ -15,42 +15,67 @@ function ProductDetails() {
 
   const fetchProduct = async () => {
     try {
+      setLoading(true);
+
       const data = await getProductById(id);
+
       setProduct(data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching product:", error);
       setProduct(null);
     } finally {
       setLoading(false);
     }
   };
 
+  // Loading
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className="product-details-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading product...</p>
+      </div>
+    );
   }
 
+  // Product not found
   if (!product) {
-    return <h2>Product not found.</h2>;
+    return (
+      <div className="product-not-found">
+        <h2>Product not found</h2>
+
+        <p>
+          Sorry, the product you are looking for does not exist.
+        </p>
+
+        <Link to="/shop">
+          Back to Shop
+        </Link>
+      </div>
+    );
   }
 
+  // Add product to cart
   const onAddToCart = () => {
     try {
-      // Check if product is out of stock
+      // Check stock
       if (product.stock <= 0) {
         alert("Sorry, this product is out of stock.");
         return;
       }
 
+      // Get existing cart
       const current = JSON.parse(
         localStorage.getItem("cart") || "[]"
       );
 
+      // Check whether product already exists
       const existing = current.find(
         (item) => item.id === product._id
       );
 
-      // Check stock limit
       if (existing) {
+        // Check stock limit
         if (existing.quantity >= product.stock) {
           alert(
             `Only ${product.stock} item(s) available in stock.`
@@ -60,6 +85,7 @@ function ProductDetails() {
 
         existing.quantity += 1;
       } else {
+        // Add new product
         current.push({
           id: product._id,
           name: product.name,
@@ -70,18 +96,20 @@ function ProductDetails() {
         });
       }
 
+      // Save cart
       localStorage.setItem(
         "cart",
         JSON.stringify(current)
       );
 
+      // Update navbar cart count
       window.dispatchEvent(
         new Event("cartUpdated")
       );
 
       alert("Product added to cart!");
     } catch (error) {
-      console.log(error);
+      console.error("Cart error:", error);
       alert("Something went wrong.");
     }
   };
@@ -89,6 +117,7 @@ function ProductDetails() {
   return (
     <section className="product-details">
 
+      {/* Product Image */}
       <div className="product-image">
         <img
           src={product.image}
@@ -96,11 +125,15 @@ function ProductDetails() {
         />
       </div>
 
+      {/* Product Information */}
       <div className="product-info">
 
         <h1>{product.name}</h1>
 
-        <h2>Rs. {product.price}</h2>
+        <h2>
+          Rs.{" "}
+          {Number(product.price).toLocaleString()}
+        </h2>
 
         <p>
           <strong>Category:</strong>{" "}
@@ -112,19 +145,49 @@ function ProductDetails() {
           {product.stock}
         </p>
 
-        <p>{product.description}</p>
+        <p className="product-description">
+          {product.description ||
+            "No description available."}
+        </p>
 
+        {/* Stock Status */}
         {product.stock > 0 ? (
-          <button onClick={onAddToCart}>
-            Add to Cart
-          </button>
+          <>
+            <p className="in-stock">
+              ✓ In Stock
+            </p>
+
+            <button
+              className="add-to-cart-btn"
+              onClick={onAddToCart}
+            >
+              Add to Cart
+            </button>
+          </>
         ) : (
-          <button disabled>
-            Out of Stock
-          </button>
+          <>
+            <p className="out-of-stock">
+              ✕ Out of Stock
+            </p>
+
+            <button
+              className="add-to-cart-btn"
+              disabled
+            >
+              Out of Stock
+            </button>
+          </>
         )}
 
+        <Link
+          to="/shop"
+          className="back-to-shop"
+        >
+          ← Continue Shopping
+        </Link>
+
       </div>
+
     </section>
   );
 }

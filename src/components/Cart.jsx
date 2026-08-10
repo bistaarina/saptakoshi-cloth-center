@@ -9,13 +9,39 @@ function Cart() {
 
   useEffect(() => {
     loadCart();
+
+    const handleCartUpdate = () => {
+      loadCart();
+    };
+
+    window.addEventListener(
+      "cartUpdated",
+      handleCartUpdate
+    );
+
+    return () => {
+      window.removeEventListener(
+        "cartUpdated",
+        handleCartUpdate
+      );
+    };
   }, []);
 
+  // Load cart from localStorage
   const loadCart = () => {
-    const items = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCart(items);
+    try {
+      const items = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+      );
+
+      setCart(items);
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+      setCart([]);
+    }
   };
 
+  // Update cart
   const updateCart = (updatedCart) => {
     setCart(updatedCart);
 
@@ -35,6 +61,10 @@ function Cart() {
 
     const item = updated[index];
 
+    if (!item) {
+      return;
+    }
+
     // Check stock
     if (item.quantity >= item.stock) {
       alert(
@@ -53,8 +83,14 @@ function Cart() {
   const decreaseQuantity = (index) => {
     const updated = [...cart];
 
-    if (updated[index].quantity > 1) {
-      updated[index].quantity -= 1;
+    const item = updated[index];
+
+    if (!item) {
+      return;
+    }
+
+    if (item.quantity > 1) {
+      item.quantity -= 1;
     } else {
       updated.splice(index, 1);
     }
@@ -64,6 +100,14 @@ function Cart() {
 
   // Remove product
   const removeItem = (index) => {
+    const confirmRemove = window.confirm(
+      "Are you sure you want to remove this product?"
+    );
+
+    if (!confirmRemove) {
+      return;
+    }
+
     const updated = [...cart];
 
     updated.splice(index, 1);
@@ -71,118 +115,240 @@ function Cart() {
     updateCart(updated);
   };
 
-  // Calculate total
+  // Clear entire cart
+  const clearCart = () => {
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear your cart?"
+    );
+
+    if (!confirmClear) {
+      return;
+    }
+
+    updateCart([]);
+  };
+
+  // Calculate subtotal
   const total = cart.reduce(
     (sum, item) =>
       sum +
-      Number(item.price) * item.quantity,
+      Number(item.price || 0) *
+        Number(item.quantity || 0),
     0
   );
+
+  // Proceed to checkout
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    navigate("/checkout");
+  };
 
   return (
     <section className="cart-page">
 
-      <h1>Shopping Cart</h1>
+      {/* Header */}
+      <div className="cart-header">
 
+        <div>
+          <h1>Shopping Cart</h1>
+
+          <p>
+            Review your products before checkout.
+          </p>
+        </div>
+
+        {cart.length > 0 && (
+          <button
+            className="clear-cart-btn"
+            onClick={clearCart}
+          >
+            Clear Cart
+          </button>
+        )}
+
+      </div>
+
+      {/* Empty Cart */}
       {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
+
+        <div className="empty-cart">
+
+          <div className="empty-cart-icon">
+            🛒
+          </div>
+
+          <h2>Your cart is empty</h2>
+
+          <p>
+            You haven't added any products to your
+            cart yet.
+          </p>
+
+          <button
+            className="continue-shopping-btn"
+            onClick={() => navigate("/shop")}
+          >
+            Continue Shopping
+          </button>
+
+        </div>
+
       ) : (
+
         <>
-          {cart.map((item, index) => (
-            <div
-              key={index}
-              className="cart-item"
-            >
 
-              <img
-                src={item.image}
-                alt={item.name}
-              />
+          {/* Cart Items */}
+          <div className="cart-items">
 
-              <div className="cart-info">
+            {cart.map((item, index) => (
 
-                <h3>{item.name}</h3>
+              <div
+                key={item.id || index}
+                className="cart-item"
+              >
 
-                <p>
-                  Price:{" "}
-                  <strong>
-                    Rs. {item.price}
-                  </strong>
-                </p>
+                {/* Product Image */}
+                <div className="cart-image">
 
-                <p>
-                  Available Stock:{" "}
-                  <strong>
-                    {item.stock}
-                  </strong>
-                </p>
-
-                <div className="quantity-box">
-
-                  <button
-                    className="qty-btn"
-                    onClick={() =>
-                      decreaseQuantity(index)
-                    }
-                  >
-                    −
-                  </button>
-
-                  <span>
-                    {item.quantity}
-                  </span>
-
-                  <button
-                    className="qty-btn"
-                    onClick={() =>
-                      increaseQuantity(index)
-                    }
-                    disabled={
-                      item.quantity >= item.stock
-                    }
-                  >
-                    +
-                  </button>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                  />
 
                 </div>
 
-                <h4>
-                  Subtotal: Rs.{" "}
-                  {Number(item.price) *
-                    item.quantity}
-                </h4>
+                {/* Product Information */}
+                <div className="cart-info">
+
+                  <h3>
+                    {item.name}
+                  </h3>
+
+                  <p>
+                    Price:{" "}
+                    <strong>
+                      Rs.{" "}
+                      {Number(
+                        item.price || 0
+                      ).toLocaleString()}
+                    </strong>
+                  </p>
+
+                  <p>
+                    Available Stock:{" "}
+                    <strong>
+                      {item.stock}
+                    </strong>
+                  </p>
+
+                  {/* Quantity */}
+                  <div className="quantity-box">
+
+                    <button
+                      className="qty-btn"
+                      onClick={() =>
+                        decreaseQuantity(index)
+                      }
+                    >
+                      −
+                    </button>
+
+                    <span>
+                      {item.quantity}
+                    </span>
+
+                    <button
+                      className="qty-btn"
+                      onClick={() =>
+                        increaseQuantity(index)
+                      }
+                      disabled={
+                        item.quantity >=
+                        item.stock
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                  {/* Subtotal */}
+                  <h4>
+                    Subtotal: Rs.{" "}
+                    {(
+                      Number(
+                        item.price || 0
+                      ) *
+                      Number(
+                        item.quantity || 0
+                      )
+                    ).toLocaleString()}
+                  </h4>
+
+                </div>
+
+                {/* Remove */}
+                <button
+                  className="remove-btn"
+                  onClick={() =>
+                    removeItem(index)
+                  }
+                >
+                  Remove
+                </button>
 
               </div>
 
-              <button
-                className="remove-btn"
-                onClick={() =>
-                  removeItem(index)
-                }
-              >
-                Remove
-              </button>
+            ))}
 
-            </div>
-          ))}
+          </div>
 
+          {/* Cart Summary */}
           <div className="cart-total">
 
-            <h2>
-              Total: Rs. {total}
-            </h2>
+            <div>
+              <span>
+                Total Items
+              </span>
+
+              <strong>
+                {cart.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(
+                      item.quantity || 0
+                    ),
+                  0
+                )}
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Total Amount
+              </span>
+
+              <h2>
+                Rs.{" "}
+                {total.toLocaleString()}
+              </h2>
+            </div>
 
             <button
               className="checkout-btn"
-              onClick={() =>
-                navigate("/checkout")
-              }
+              onClick={handleCheckout}
             >
-              Proceed to Checkout
+              Proceed to Checkout →
             </button>
 
           </div>
+
         </>
+
       )}
 
     </section>
