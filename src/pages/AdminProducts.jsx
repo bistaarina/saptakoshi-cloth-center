@@ -33,6 +33,7 @@ function AdminProducts() {
     fetchProducts();
   }, []);
 
+  // Fetch products
   const fetchProducts = async () => {
     try {
       const data = await getProducts();
@@ -90,6 +91,9 @@ function AdminProducts() {
 
       resetForm();
       fetchProducts();
+
+      // Refresh customer shop
+      window.dispatchEvent(new Event("stockUpdated"));
     } catch (error) {
       console.error(error);
 
@@ -137,6 +141,9 @@ function AdminProducts() {
       alert("Product deleted successfully!");
 
       fetchProducts();
+
+      // Refresh customer shop
+      window.dispatchEvent(new Event("stockUpdated"));
     } catch (error) {
       console.error(error);
 
@@ -224,9 +231,7 @@ function AdminProducts() {
             }
           }}
         >
-          {showForm
-            ? "Close Form"
-            : "+ Add Product"}
+          {showForm ? "Close Form" : "+ Add Product"}
         </button>
 
       </div>
