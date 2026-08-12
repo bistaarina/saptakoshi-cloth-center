@@ -62,8 +62,7 @@ function AdminDashboard() {
   const totalSales = orders
     .filter((order) => order.status !== "Cancelled")
     .reduce(
-      (sum, order) =>
-        sum + Number(order.total || 0),
+      (sum, order) => sum + Number(order.total || 0),
       0
     );
 
@@ -87,7 +86,10 @@ function AdminDashboard() {
     (product) => Number(product.stock) === 0
   ).length;
 
-  // Recent orders
+  // =========================
+  // RECENT ORDERS
+  // =========================
+
   const recentOrders = orders.slice(0, 5);
 
   // =========================
@@ -98,8 +100,12 @@ function AdminDashboard() {
     return (
       <div className="dashboard-loading">
         <div className="loading-spinner"></div>
+
         <h3>Loading dashboard...</h3>
-        <p>Please wait while we load your store data.</p>
+
+        <p>
+          Please wait while we load your store data.
+        </p>
       </div>
     );
   }
@@ -128,6 +134,8 @@ function AdminDashboard() {
 
         <nav className="admin-nav">
 
+          {/* Dashboard */}
+
           <Link
             to="/admin"
             className={`nav-item ${
@@ -139,6 +147,8 @@ function AdminDashboard() {
             <span>📊</span>
             Dashboard
           </Link>
+
+          {/* Orders */}
 
           <Link
             to="/admin/orders"
@@ -152,6 +162,8 @@ function AdminDashboard() {
             Orders
           </Link>
 
+          {/* Products */}
+
           <Link
             to="/admin/products"
             className={`nav-item ${
@@ -164,6 +176,8 @@ function AdminDashboard() {
             Products
           </Link>
 
+          {/* View Store */}
+
           <Link
             to="/shop"
             className="nav-item"
@@ -175,8 +189,13 @@ function AdminDashboard() {
         </nav>
 
         <div className="admin-sidebar-bottom">
+
           <p>Admin Panel</p>
-          <span>© 2026 Saptakoshi</span>
+
+          <span>
+            © 2026 Saptakoshi
+          </span>
+
         </div>
 
       </aside>
@@ -226,7 +245,7 @@ function AdminDashboard() {
 
         <section className="statistics-grid">
 
-          {/* PRODUCTS */}
+          {/* Products */}
 
           <div className="stat-card">
 
@@ -235,7 +254,6 @@ function AdminDashboard() {
             </div>
 
             <div>
-
               <span>
                 Total Products
               </span>
@@ -243,12 +261,11 @@ function AdminDashboard() {
               <h2>
                 {totalProducts}
               </h2>
-
             </div>
 
           </div>
 
-          {/* ORDERS */}
+          {/* Orders */}
 
           <div className="stat-card">
 
@@ -257,7 +274,6 @@ function AdminDashboard() {
             </div>
 
             <div>
-
               <span>
                 Total Orders
               </span>
@@ -265,12 +281,11 @@ function AdminDashboard() {
               <h2>
                 {orders.length}
               </h2>
-
             </div>
 
           </div>
 
-          {/* PENDING */}
+          {/* Pending */}
 
           <div className="stat-card">
 
@@ -279,7 +294,6 @@ function AdminDashboard() {
             </div>
 
             <div>
-
               <span>
                 Pending Orders
               </span>
@@ -287,12 +301,11 @@ function AdminDashboard() {
               <h2>
                 {pendingOrders}
               </h2>
-
             </div>
 
           </div>
 
-          {/* SALES */}
+          {/* Sales */}
 
           <div className="stat-card">
 
@@ -301,16 +314,13 @@ function AdminDashboard() {
             </div>
 
             <div>
-
               <span>
                 Total Sales
               </span>
 
               <h2>
-                Rs.{" "}
-                {totalSales.toLocaleString()}
+                Rs. {totalSales.toLocaleString()}
               </h2>
-
             </div>
 
           </div>
@@ -326,7 +336,6 @@ function AdminDashboard() {
           <div className="section-header">
 
             <div>
-
               <h2>
                 Inventory Overview
               </h2>
@@ -334,7 +343,6 @@ function AdminDashboard() {
               <p>
                 Current product stock status
               </p>
-
             </div>
 
             <Link
@@ -348,7 +356,7 @@ function AdminDashboard() {
 
           <div className="inventory-dashboard-grid">
 
-            {/* TOTAL */}
+            {/* Total */}
 
             <div className="inventory-dashboard-card">
 
@@ -357,7 +365,6 @@ function AdminDashboard() {
               </div>
 
               <div>
-
                 <span>
                   Total Products
                 </span>
@@ -365,12 +372,11 @@ function AdminDashboard() {
                 <strong>
                   {totalProducts}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* IN STOCK */}
+            {/* In Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -379,7 +385,6 @@ function AdminDashboard() {
               </div>
 
               <div>
-
                 <span>
                   In Stock
                 </span>
@@ -387,12 +392,11 @@ function AdminDashboard() {
                 <strong>
                   {inStockProducts}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* LOW STOCK */}
+            {/* Low Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -401,7 +405,6 @@ function AdminDashboard() {
               </div>
 
               <div>
-
                 <span>
                   Low Stock
                 </span>
@@ -409,12 +412,11 @@ function AdminDashboard() {
                 <strong>
                   {lowStockProducts}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* OUT OF STOCK */}
+            {/* Out of Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -423,7 +425,6 @@ function AdminDashboard() {
               </div>
 
               <div>
-
                 <span>
                   Out of Stock
                 </span>
@@ -431,7 +432,6 @@ function AdminDashboard() {
                 <strong>
                   {outOfStockProducts}
                 </strong>
-
               </div>
 
             </div>
@@ -473,7 +473,7 @@ function AdminDashboard() {
 
                 {lowStockProducts > 0 &&
                   outOfStockProducts > 0 && (
-                    <> </>  
+                    <> </>
                   )}
 
                 {outOfStockProducts > 0 && (
@@ -498,7 +498,6 @@ function AdminDashboard() {
             </Link>
 
           </section>
-
         )}
 
         {/* =========================
@@ -510,7 +509,6 @@ function AdminDashboard() {
           <div className="section-header">
 
             <div>
-
               <h2>
                 Order Overview
               </h2>
@@ -518,14 +516,13 @@ function AdminDashboard() {
               <p>
                 Current order status summary
               </p>
-
             </div>
 
           </div>
 
           <div className="order-status-grid">
 
-            {/* PENDING */}
+            {/* Pending */}
 
             <div className="status-card">
 
@@ -543,14 +540,13 @@ function AdminDashboard() {
 
             </div>
 
-            {/* CONFIRMED */}
+            {/* Confirmed */}
 
             <div className="status-card">
 
               <span className="status-dot confirmed"></span>
 
               <div>
-
                 <span>
                   Confirmed
                 </span>
@@ -558,19 +554,17 @@ function AdminDashboard() {
                 <strong>
                   {confirmedOrders}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* SHIPPED */}
+            {/* Shipped */}
 
             <div className="status-card">
 
               <span className="status-dot shipped"></span>
 
               <div>
-
                 <span>
                   Shipped
                 </span>
@@ -578,19 +572,17 @@ function AdminDashboard() {
                 <strong>
                   {shippedOrders}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* DELIVERED */}
+            {/* Delivered */}
 
             <div className="status-card">
 
               <span className="status-dot delivered"></span>
 
               <div>
-
                 <span>
                   Delivered
                 </span>
@@ -598,19 +590,17 @@ function AdminDashboard() {
                 <strong>
                   {deliveredOrders}
                 </strong>
-
               </div>
 
             </div>
 
-            {/* CANCELLED */}
+            {/* Cancelled */}
 
             <div className="status-card">
 
               <span className="status-dot cancelled"></span>
 
               <div>
-
                 <span>
                   Cancelled
                 </span>
@@ -618,7 +608,6 @@ function AdminDashboard() {
                 <strong>
                   {cancelledOrders}
                 </strong>
-
               </div>
 
             </div>
@@ -636,7 +625,6 @@ function AdminDashboard() {
           <div className="section-header">
 
             <div>
-
               <h2>
                 Recent Orders
               </h2>
@@ -644,7 +632,6 @@ function AdminDashboard() {
               <p>
                 Latest customer orders
               </p>
-
             </div>
 
             <Link
@@ -710,98 +697,94 @@ function AdminDashboard() {
 
                 <tbody>
 
-                  {recentOrders.map(
-                    (order) => (
+                  {recentOrders.map((order) => (
 
-                      <tr key={order._id}>
+                    <tr key={order._id}>
 
-                        {/* CUSTOMER */}
+                      {/* Customer */}
 
-                        <td>
+                      <td>
 
-                          <div className="customer-cell">
+                        <div className="customer-cell">
 
-                            <div className="customer-avatar">
+                          <div className="customer-avatar">
 
-                              {order.customerName
-                                ?.charAt(0)
-                                .toUpperCase()}
-
-                            </div>
-
-                            <div>
-
-                              <strong>
-                                {order.customerName}
-                              </strong>
-
-                              <span>
-                                {order.email}
-                              </span>
-
-                            </div>
+                            {order.customerName
+                              ?.charAt(0)
+                              .toUpperCase()}
 
                           </div>
 
-                        </td>
+                          <div>
 
-                        {/* ORDER ID */}
+                            <strong>
+                              {order.customerName}
+                            </strong>
 
-                        <td>
+                            <span>
+                              {order.email}
+                            </span>
 
-                          <span className="order-id">
-                            #
-                            {order._id.slice(-6)}
-                          </span>
+                          </div>
 
-                        </td>
+                        </div>
 
-                        {/* DATE */}
+                      </td>
 
-                        <td>
+                      {/* Order ID */}
 
-                          {new Date(
-                            order.createdAt
-                          ).toLocaleDateString()}
+                      <td>
 
-                        </td>
+                        <span className="order-id">
+                          #{order._id.slice(-6)}
+                        </span>
 
-                        {/* TOTAL */}
+                      </td>
 
-                        <td>
+                      {/* Date */}
 
-                          <strong>
-                            Rs.{" "}
-                            {Number(
-                              order.total || 0
-                            ).toLocaleString()}
-                          </strong>
+                      <td>
 
-                        </td>
+                        {order.createdAt
+                          ? new Date(
+                              order.createdAt
+                            ).toLocaleDateString()
+                          : "N/A"}
 
-                        {/* STATUS */}
+                      </td>
 
-                        <td>
+                      {/* Total */}
 
-                          <span
-                            className={`order-status ${
-                              order.status
-                                ?.toLowerCase()
-                                .replace(
-                                  /\s+/g,
-                                  "-"
-                                )
-                            }`}
-                          >
-                            {order.status}
-                          </span>
+                      <td>
 
-                        </td>
+                        <strong>
+                          Rs.{" "}
+                          {Number(
+                            order.total || 0
+                          ).toLocaleString()}
+                        </strong>
 
-                      </tr>
+                      </td>
 
-                    )
-                  )}
+                      {/* Status */}
+
+                      <td>
+
+                        <span
+                          className={`order-status ${
+                            order.status
+                              ?.toLowerCase()
+                              .replace(/\s+/g, "-")
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+
+                      </td>
+
+                    </tr>
+
+                  ))}
 
                 </tbody>
 
