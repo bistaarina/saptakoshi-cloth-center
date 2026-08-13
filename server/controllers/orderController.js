@@ -1,18 +1,29 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 
-// Create a new order
+// ===============================
+// Create a New Order
+// ===============================
 export const createOrder = async (req, res) => {
   try {
     const { products } = req.body;
 
-    // Check product stock first
+    // Check if products exist
+    if (!products || products.length === 0) {
+      return res.status(400).json({
+        message: "No products found in the order.",
+      });
+    }
+
+    // ===============================
+    // Check Product Stock
+    // ===============================
     for (const item of products) {
       const product = await Product.findById(item.id);
 
       if (!product) {
         return res.status(404).json({
-          message: `Product "${item.name}" not found`,
+          message: `Product "${item.name}" not found.`,
         });
       }
 
@@ -23,7 +34,9 @@ export const createOrder = async (req, res) => {
       }
     }
 
-    // Reduce stock
+    // ===============================
+    // Reduce Product Stock
+    // ===============================
     for (const item of products) {
       const product = await Product.findById(item.id);
 
@@ -32,7 +45,9 @@ export const createOrder = async (req, res) => {
       await product.save();
     }
 
-    // Create order
+    // ===============================
+    // Create Order
+    // ===============================
     const order = await Order.create(req.body);
 
     res.status(201).json({
@@ -40,7 +55,7 @@ export const createOrder = async (req, res) => {
       order,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Create Order Error:", error);
 
     res.status(500).json({
       message: error.message,
@@ -48,108 +63,92 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// Get all orders
+// ===============================
+// Get All Orders
+// ===============================
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const orders = await Order.find().sort({
+      createdAt: -1,
+    });
 
     res.status(200).json(orders);
   } catch (error) {
+    console.log("Get Orders Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
-// Get logged-in user's orders
+// ===============================
+// Get My Orders
+// ===============================
 export const getMyOrders = async (req, res) => {
   try {
     const orders = await Order.find({
       user: req.params.userId,
-    }).sort({ createdAt: -1 });
+    }).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json(orders);
   } catch (error) {
+    console.log("Get My Orders Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
-// Update order status
+// ===============================
+// Update Order Status
+// ===============================
 export const updateOrderStatus = async (req, res) => {
   try {
+    const { status } = req.body;
+
     const order = await Order.findByIdAndUpdate(
       req.params.id,
       {
-        status: req.body.status,
+        status,
       },
-      { new: true }
+      {
+        new: true,
+      }
     );
 
     if (!order) {
       return res.status(404).json({
-        message: "Order not found",
+        message: "Order not found.",
       });
     }
 
-    res.json({
-      message: "Order status updated successfully",
+    res.status(200).json({
+      message: "Order status updated successfully.",
       order,
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-// Delete order and restore stock
-export const deleteOrder = async (req, res) => {
-  try {
-    // Find the order first
-    const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(404).json({
-        message: "Order not found",
-      });
-    }
-
-    // Restore product stock
-    for (const item of order.products) {
-      const product = await Product.findById(item.id);
-
-      if (product) {
-        product.stock += item.quantity;
-
-        await product.save();
-      }
-    }
-
-    // Delete the order
-    await Order.findByIdAndDelete(req.params.id);
-
-    res.json({
-      message: "Order deleted and stock restored successfully",
-    });
-  } catch (error) {
-    console.log(error);
+    console.log("Update Order Status Error:", error);
 
     res.status(500).json({
       message: error.message,
     });
   }
 };
-// Cancel order and restore stock
+
+// ===============================
+// Cancel Order
+// ===============================
 export const cancelOrder = async (req, res) => {
   try {
-    // Find the order
     const order = await Order.findById(req.params.id);
 
     if (!order) {
       return res.status(404).json({
-        message: "Order not found",
+        message: "Order not found.",
       });
     }
 
@@ -163,7 +162,9 @@ export const cancelOrder = async (req, res) => {
       });
     }
 
-    // Restore product stock
+    // ===============================
+    // Restore Product Stock
+    // ===============================
     for (const item of order.products) {
       const product = await Product.findById(item.id);
 
@@ -174,17 +175,70 @@ export const cancelOrder = async (req, res) => {
       }
     }
 
-    // Change order status
+    // ===============================
+    // Update Order Status
+    // ===============================
     order.status = "Cancelled";
 
     await order.save();
 
     res.status(200).json({
-      message: "Order cancelled successfully and stock restored.",
+      message:
+        "Order cancelled successfully and stock restored.",
       order,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Cancel Order Error:", error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// ===============================
+// Delete Order
+// ===============================
+export const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found.",
+      });
+    }
+
+    // ===============================
+    // Restore Stock
+    // ===============================
+    // If the order was already cancelled,
+    // stock has already been restored.
+    if (order.status !== "Cancelled") {
+      for (const item of order.products) {
+        const product = await Product.findById(item.id);
+
+        if (product) {
+          product.stock += item.quantity;
+
+          await product.save();
+        }
+      }
+    }
+
+    // ===============================
+    // Delete Order
+    // ===============================
+    await Order.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      message:
+        order.status === "Cancelled"
+          ? "Cancelled order deleted successfully."
+          : "Order deleted and stock restored successfully.",
+    });
+  } catch (error) {
+    console.log("Delete Order Error:", error);
 
     res.status(500).json({
       message: error.message,
