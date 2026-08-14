@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/Register.css";
 import API from "../api/api";
 
@@ -13,23 +13,32 @@ function Register() {
     confirmPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setUser((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (
-      !user.fullName ||
-      !user.email ||
+      !user.fullName.trim() ||
+      !user.email.trim() ||
       !user.password ||
       !user.confirmPassword
     ) {
       alert("Please fill all fields.");
+      return;
+    }
+
+    if (user.password.length < 6) {
+      alert("Password must be at least 6 characters.");
       return;
     }
 
@@ -39,17 +48,29 @@ function Register() {
     }
 
     try {
+      setLoading(true);
+
       const res = await API.post("/auth/register", {
-        fullName: user.fullName,
-        email: user.email,
+        fullName: user.fullName.trim(),
+        email: user.email.trim(),
         password: user.password,
       });
 
-      alert(res.data.message);
+      alert(
+        res.data.message ||
+          "Registration successful!"
+      );
 
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Registration failed");
+      console.error("Registration error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +78,10 @@ function Register() {
     <section className="register">
       <div className="register-container">
         <h1>Create Account</h1>
-        <p>Join Saptakoshi Cloth Center</p>
+
+        <p>
+          Join Saptakoshi Cloth Center
+        </p>
 
         <form onSubmit={handleRegister}>
           <input
@@ -96,10 +120,22 @@ function Register() {
             required
           />
 
-          <button type="submit">
-            Register
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Creating Account..."
+              : "Register"}
           </button>
         </form>
+
+        <p>
+          Already have an account?{" "}
+          <Link to="/login">
+            Login
+          </Link>
+        </p>
       </div>
     </section>
   );

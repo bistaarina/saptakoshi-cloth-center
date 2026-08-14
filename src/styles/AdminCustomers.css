@@ -1,0 +1,199 @@
+.admin-customers-page {
+  padding: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.customers-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.customers-page-header h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+
+.customers-page-header p {
+  margin: 0;
+  color: #777;
+}
+
+.customers-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f7f7f7;
+  padding: 12px 24px;
+  border-radius: 10px;
+}
+
+.customers-count strong {
+  font-size: 24px;
+}
+
+.customers-count span {
+  color: #777;
+  font-size: 13px;
+}
+
+.customers-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.customer-search-form {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+}
+
+.customer-search-form input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.customer-search-form button,
+.clear-customer-filter {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  background: #222;
+  color: white;
+}
+
+.clear-customer-filter {
+  background: #777;
+}
+
+.customers-results {
+  margin-bottom: 15px;
+  color: #777;
+  font-size: 14px;
+}
+
+.customers-table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.customers-table th,
+.customers-table td {
+  padding: 18px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.customers-table th {
+  background: #f8f8f8;
+  font-size: 13px;
+  color: #666;
+}
+
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #222;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.role-badge {
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.role-badge.user {
+  background: #e8f1ff;
+  color: #2563eb;
+}
+
+.role-badge.admin {
+  background: #fff4cc;
+  color: #9a7200;
+}
+
+.delete-customer-btn {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-customer-btn:hover {
+  background: #b71c1c;
+}
+
+.admin-protected {
+  color: #777;
+  font-size: 13px;
+}
+
+.no-customers {
+  text-align: center;
+  padding: 80px 20px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.no-customers-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.no-customers p {
+  color: #777;
+}
+
+.customers-loading {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+@media (max-width: 768px) {
+  .admin-customers-page {
+    padding: 25px 15px;
+  }
+
+  .customers-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .customers-filters {
+    flex-direction: column;
+  }
+
+  .customer-search-form {
+    width: 100%;
+  }
+}

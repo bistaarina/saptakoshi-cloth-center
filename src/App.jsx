@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedAdmin from "./components/ProtectedAdmin";
 import CustomerLayout from "./components/CustomerLayout";
 import AdminLayout from "./components/AdminLayout";
-
+import AdminCustomersPage from "./pages/AdminCustomersPage";
 // Customer Pages
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -73,7 +73,10 @@ function App() {
         />
 
       </Route>
-
+<Route
+  path="/admin/customers"
+  element={<AdminCustomersPage />}
+/>
 
       {/* ==================== */}
       {/* ADMIN PANEL */}

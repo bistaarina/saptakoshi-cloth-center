@@ -6,6 +6,7 @@ import "../styles/Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -22,30 +23,44 @@ function Login() {
         password,
       });
 
-localStorage.setItem("token", res.data.token);
-localStorage.setItem("user", JSON.stringify(res.data.user));
-localStorage.setItem("auth", "true");
+      // Save authentication information
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
+      );
+      localStorage.setItem("auth", "true");
 
-console.log("LOGIN RESPONSE:");
-console.log(res.data);
-// Notify Navbar to update
-window.dispatchEvent(new Event("storage"));
+      console.log("LOGIN RESPONSE:");
+      console.log(res.data);
 
-alert(res.data.message);
+      // Notify other components
+      window.dispatchEvent(new Event("storage"));
+      window.dispatchEvent(new Event("authChanged"));
 
-// Redirect to home
-window.location.href = "/";
-    } 
-    catch (error) {
-  console.log(error.response);
-  alert(error.response?.data?.message || "Login failed");
-}
+      alert(res.data.message || "Login successful!");
+
+      // Redirect based on user role
+      if (res.data.user?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Login failed. Please check your email and password."
+      );
+    }
   };
 
   return (
     <section className="login">
       <div className="login-container">
         <h1>Welcome Back</h1>
+
         <p>Login to your account</p>
 
         <form onSubmit={handleLogin}>
@@ -65,11 +80,16 @@ window.location.href = "/";
             required
           />
 
-          <button type="submit">Login</button>
+          <button type="submit">
+            Login
+          </button>
         </form>
 
         <p>
-          Don't have an account? <Link to="/register">Register</Link>
+          Don't have an account?{" "}
+          <Link to="/register">
+            Register
+          </Link>
         </p>
       </div>
     </section>

@@ -15,6 +15,10 @@ function AdminDashboard() {
     fetchDashboardData();
   }, []);
 
+  // =========================
+  // FETCH DASHBOARD DATA
+  // =========================
+
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
@@ -119,6 +123,8 @@ function AdminDashboard() {
 
       <aside className="admin-sidebar">
 
+        {/* ADMIN LOGO */}
+
         <div className="admin-logo">
 
           <div className="logo-icon">
@@ -131,6 +137,8 @@ function AdminDashboard() {
           </div>
 
         </div>
+
+        {/* NAVIGATION */}
 
         <nav className="admin-nav">
 
@@ -176,6 +184,20 @@ function AdminDashboard() {
             Products
           </Link>
 
+          {/* Customers */}
+
+          <Link
+            to="/admin/customers"
+            className={`nav-item ${
+              location.pathname === "/admin/customers"
+                ? "active"
+                : ""
+            }`}
+          >
+            <span>👥</span>
+            Customers
+          </Link>
+
           {/* View Store */}
 
           <Link
@@ -187,6 +209,8 @@ function AdminDashboard() {
           </Link>
 
         </nav>
+
+        {/* SIDEBAR BOTTOM */}
 
         <div className="admin-sidebar-bottom">
 
@@ -206,7 +230,9 @@ function AdminDashboard() {
 
       <main className="admin-main">
 
-        {/* HEADER */}
+        {/* =========================
+            HEADER
+        ========================= */}
 
         <header className="admin-header">
 
@@ -218,6 +244,8 @@ function AdminDashboard() {
               and orders.
             </p>
           </div>
+
+          {/* ADMIN PROFILE */}
 
           <div className="admin-profile">
 
@@ -245,7 +273,7 @@ function AdminDashboard() {
 
         <section className="statistics-grid">
 
-          {/* Products */}
+          {/* PRODUCTS */}
 
           <div className="stat-card">
 
@@ -265,7 +293,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* Orders */}
+          {/* ORDERS */}
 
           <div className="stat-card">
 
@@ -285,7 +313,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* Pending */}
+          {/* PENDING */}
 
           <div className="stat-card">
 
@@ -305,7 +333,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* Sales */}
+          {/* SALES */}
 
           <div className="stat-card">
 
@@ -356,7 +384,7 @@ function AdminDashboard() {
 
           <div className="inventory-dashboard-grid">
 
-            {/* Total */}
+            {/* TOTAL PRODUCTS */}
 
             <div className="inventory-dashboard-card">
 
@@ -376,7 +404,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* In Stock */}
+            {/* IN STOCK */}
 
             <div className="inventory-dashboard-card">
 
@@ -396,7 +424,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Low Stock */}
+            {/* LOW STOCK */}
 
             <div className="inventory-dashboard-card">
 
@@ -416,7 +444,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Out of Stock */}
+            {/* OUT OF STOCK */}
 
             <div className="inventory-dashboard-card">
 
@@ -498,6 +526,7 @@ function AdminDashboard() {
             </Link>
 
           </section>
+
         )}
 
         {/* =========================
@@ -522,7 +551,7 @@ function AdminDashboard() {
 
           <div className="order-status-grid">
 
-            {/* Pending */}
+            {/* PENDING */}
 
             <div className="status-card">
 
@@ -540,7 +569,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Confirmed */}
+            {/* CONFIRMED */}
 
             <div className="status-card">
 
@@ -558,7 +587,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Shipped */}
+            {/* SHIPPED */}
 
             <div className="status-card">
 
@@ -576,7 +605,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Delivered */}
+            {/* DELIVERED */}
 
             <div className="status-card">
 
@@ -594,7 +623,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* Cancelled */}
+            {/* CANCELLED */}
 
             <div className="status-card">
 
@@ -642,6 +671,8 @@ function AdminDashboard() {
             </Link>
 
           </div>
+
+          {/* NO ORDERS */}
 
           {recentOrders.length === 0 ? (
 
@@ -701,7 +732,7 @@ function AdminDashboard() {
 
                     <tr key={order._id}>
 
-                      {/* Customer */}
+                      {/* CUSTOMER */}
 
                       <td>
 
@@ -731,7 +762,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* Order ID */}
+                      {/* ORDER ID */}
 
                       <td>
 
@@ -741,7 +772,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* Date */}
+                      {/* DATE */}
 
                       <td>
 
@@ -753,7 +784,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* Total */}
+                      {/* TOTAL */}
 
                       <td>
 
@@ -766,7 +797,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* Status */}
+                      {/* STATUS */}
 
                       <td>
 
