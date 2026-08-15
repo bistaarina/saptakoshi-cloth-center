@@ -4,12 +4,13 @@ import {
   deleteUser,
 } from "../controllers/userController.js";
 
+import { protect } from "../middleware/authMiddleware.js";
+import { adminOnly } from "../middleware/adminMiddleware.js";
+
 const router = express.Router();
 
-// Get all users
-router.get("/", getUsers);
+router.get("/", protect, adminOnly, getUsers);
 
-// Delete user
-router.delete("/:id", deleteUser);
+router.delete("/:id", protect, adminOnly, deleteUser);
 
 export default router;

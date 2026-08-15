@@ -7,12 +7,18 @@ import {
   deleteProduct,
 } from "../controllers/productController.js";
 
+import { protect } from "../middleware/authMiddleware.js";
+import { adminOnly } from "../middleware/adminMiddleware.js";
+
 const router = express.Router();
 
+// Public routes
 router.get("/", getProducts);
 router.get("/:id", getProductById);
-router.post("/", addProduct);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+
+// Admin-only routes
+router.post("/", protect, adminOnly, addProduct);
+router.put("/:id", protect, adminOnly, updateProduct);
+router.delete("/:id", protect, adminOnly, deleteProduct);
 
 export default router;

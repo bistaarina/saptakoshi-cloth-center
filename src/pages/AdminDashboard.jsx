@@ -15,10 +15,6 @@ function AdminDashboard() {
     fetchDashboardData();
   }, []);
 
-  // =========================
-  // FETCH DASHBOARD DATA
-  // =========================
-
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
@@ -71,7 +67,7 @@ function AdminDashboard() {
     );
 
   // =========================
-  // INVENTORY STATISTICS
+  // INVENTORY
   // =========================
 
   const totalProducts = products.length;
@@ -123,7 +119,7 @@ function AdminDashboard() {
 
       <aside className="admin-sidebar">
 
-        {/* ADMIN LOGO */}
+        {/* LOGO */}
 
         <div className="admin-logo">
 
@@ -230,9 +226,7 @@ function AdminDashboard() {
 
       <main className="admin-main">
 
-        {/* =========================
-            HEADER
-        ========================= */}
+        {/* HEADER */}
 
         <header className="admin-header">
 
@@ -244,8 +238,6 @@ function AdminDashboard() {
               and orders.
             </p>
           </div>
-
-          {/* ADMIN PROFILE */}
 
           <div className="admin-profile">
 
@@ -273,7 +265,7 @@ function AdminDashboard() {
 
         <section className="statistics-grid">
 
-          {/* PRODUCTS */}
+          {/* Total Products */}
 
           <div className="stat-card">
 
@@ -293,7 +285,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* ORDERS */}
+          {/* Total Orders */}
 
           <div className="stat-card">
 
@@ -313,7 +305,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* PENDING */}
+          {/* Pending Orders */}
 
           <div className="stat-card">
 
@@ -333,7 +325,7 @@ function AdminDashboard() {
 
           </div>
 
-          {/* SALES */}
+          {/* Total Sales */}
 
           <div className="stat-card">
 
@@ -384,7 +376,7 @@ function AdminDashboard() {
 
           <div className="inventory-dashboard-grid">
 
-            {/* TOTAL PRODUCTS */}
+            {/* Total Products */}
 
             <div className="inventory-dashboard-card">
 
@@ -404,7 +396,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* IN STOCK */}
+            {/* In Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -424,7 +416,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* LOW STOCK */}
+            {/* Low Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -444,7 +436,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* OUT OF STOCK */}
+            {/* Out of Stock */}
 
             <div className="inventory-dashboard-card">
 
@@ -526,7 +518,6 @@ function AdminDashboard() {
             </Link>
 
           </section>
-
         )}
 
         {/* =========================
@@ -551,7 +542,7 @@ function AdminDashboard() {
 
           <div className="order-status-grid">
 
-            {/* PENDING */}
+            {/* Pending */}
 
             <div className="status-card">
 
@@ -569,7 +560,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* CONFIRMED */}
+            {/* Confirmed */}
 
             <div className="status-card">
 
@@ -587,7 +578,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* SHIPPED */}
+            {/* Shipped */}
 
             <div className="status-card">
 
@@ -605,7 +596,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* DELIVERED */}
+            {/* Delivered */}
 
             <div className="status-card">
 
@@ -623,7 +614,7 @@ function AdminDashboard() {
 
             </div>
 
-            {/* CANCELLED */}
+            {/* Cancelled */}
 
             <div className="status-card">
 
@@ -672,8 +663,6 @@ function AdminDashboard() {
 
           </div>
 
-          {/* NO ORDERS */}
-
           {recentOrders.length === 0 ? (
 
             <div className="empty-orders">
@@ -701,27 +690,11 @@ function AdminDashboard() {
                 <thead>
 
                   <tr>
-
-                    <th>
-                      Customer
-                    </th>
-
-                    <th>
-                      Order ID
-                    </th>
-
-                    <th>
-                      Date
-                    </th>
-
-                    <th>
-                      Total
-                    </th>
-
-                    <th>
-                      Status
-                    </th>
-
+                    <th>Customer</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
                   </tr>
 
                 </thead>
@@ -732,7 +705,7 @@ function AdminDashboard() {
 
                     <tr key={order._id}>
 
-                      {/* CUSTOMER */}
+                      {/* Customer */}
 
                       <td>
 
@@ -762,17 +735,17 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* ORDER ID */}
+                      {/* Order ID */}
 
                       <td>
 
                         <span className="order-id">
-                          #{order._id.slice(-6)}
+                          #{order._id?.slice(-6)}
                         </span>
 
                       </td>
 
-                      {/* DATE */}
+                      {/* Date */}
 
                       <td>
 
@@ -784,7 +757,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* TOTAL */}
+                      {/* Total */}
 
                       <td>
 
@@ -797,7 +770,7 @@ function AdminDashboard() {
 
                       </td>
 
-                      {/* STATUS */}
+                      {/* Status */}
 
                       <td>
 

@@ -20,8 +20,10 @@ export const getUsers = async (req, res) => {
 // Delete user
 export const deleteUser = async (req, res) => {
   try {
+    // Find the user first
     const user = await User.findById(req.params.id);
 
+    // Check if user exists
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -35,6 +37,7 @@ export const deleteUser = async (req, res) => {
       });
     }
 
+    // Delete customer
     await User.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
