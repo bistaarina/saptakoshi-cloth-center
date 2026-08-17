@@ -7,6 +7,7 @@ function Checkout() {
   const navigate = useNavigate();
 
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     customerName: "",
@@ -15,43 +16,43 @@ function Checkout() {
     address: "",
   });
 
-  const [loading, setLoading] = useState(false);
-
   useEffect(() => {
-    const items = JSON.parse(
-      localStorage.getItem("cart") || "[]"
-    );
+    try {
+      const savedCart = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+      );
 
-    setCart(items);
+      setCart(Array.isArray(savedCart) ? savedCart : []);
 
-    // Load logged-in user's information
-    const user = JSON.parse(
-      localStorage.getItem("user") || "null"
-    );
+      const savedUser = JSON.parse(
+        localStorage.getItem("user") || "null"
+      );
 
-    if (user) {
-      setFormData({
-        customerName:
-          user.name ||
-          user.username ||
-          "",
-        email: user.email || "",
-        phone: user.phone || "",
-        address: user.address || "",
-      });
+      if (savedUser) {
+        setFormData({
+          customerName:
+            savedUser.fullName ||
+            savedUser.name ||
+            savedUser.username ||
+            "",
+          email: savedUser.email || "",
+          phone: savedUser.phone || "",
+          address: savedUser.address || "",
+        });
+      }
+    } catch (error) {
+      console.error("Failed to load checkout data:", error);
+      setCart([]);
     }
   }, []);
 
-  // Calculate total
-  const total = cart.reduce(
-    (sum, item) =>
-      sum +
-      Number(item.price || 0) *
-        Number(item.quantity || 0),
-    0
-  );
+  const total = cart.reduce((sum, item) => {
+    const price = Number(item.price || 0);
+    const quantity = Number(item.quantity || 1);
 
-  // Handle input changes
+    return sum + price * quantity;
+  }, 0);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -61,77 +62,69 @@ function Checkout() {
     }));
   };
 
-  // Submit order
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const savedUser = JSON.parse(
+      localStorage.getItem("user") || "null"
+    );
+
+    const token = localStorage.getItem("token");
+
+    if (!savedUser || !token) {
+      alert("Please login before placing an order.");
+      navigate("/login");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      navigate("/shop");
+      return;
+    }
 
     try {
       setLoading(true);
 
-      const user = JSON.parse(
-        localStorage.getItem("user") || "null"
-      );
-
-      // Check login
-      if (!user) {
-        alert(
-          "Please login before placing an order."
-        );
-
-        navigate("/login");
-        return;
-      }
-
-      // Check cart
-      if (cart.length === 0) {
-        alert("Your cart is empty.");
-        return;
-      }
-
-      // Create order object
       const order = {
-        user: user._id,
         customerName: formData.customerName,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
         products: cart,
-        total: total,
+        total,
       };
 
       console.log("Sending order:", order);
 
-      // Send order to backend
-      const res = await placeOrder(order);
+      const response = await placeOrder(order);
+
+      console.log("Order response:", response);
 
       alert(
-        res.message ||
+        response?.message ||
           "Order placed successfully!"
       );
 
-      // Clear cart
       localStorage.removeItem("cart");
 
-      // Update navbar cart count
+      setCart([]);
+
       window.dispatchEvent(
         new Event("cartUpdated")
       );
 
-      // Refresh product stock
       window.dispatchEvent(
         new Event("stockUpdated")
       );
 
-      // Clear local cart
-      setCart([]);
-
-      // Go to My Orders
       navigate("/my-orders");
-
     } catch (error) {
+      console.error("Order submission error:", error);
+
       console.error(
-        "Order submission error:",
-        error
+        "Backend response:",
+        error.response?.data
       );
 
       alert(
@@ -143,20 +136,15 @@ function Checkout() {
     }
   };
 
-  // Empty cart
   if (cart.length === 0) {
     return (
       <section className="checkout-page">
-
         <div className="checkout-empty">
-
           <div className="checkout-empty-icon">
             🛒
           </div>
 
-          <h2>
-            Your cart is empty
-          </h2>
+          <h2>Your cart is empty</h2>
 
           <p>
             Add some products before
@@ -164,15 +152,11 @@ function Checkout() {
           </p>
 
           <button
-            onClick={() =>
-              navigate("/shop")
-            }
+            onClick={() => navigate("/shop")}
           >
             Continue Shopping
           </button>
-
         </div>
-
       </section>
     );
   }
@@ -180,38 +164,30 @@ function Checkout() {
   return (
     <section className="checkout-page">
 
-      {/* Header */}
       <div className="checkout-header">
-
         <h1>Checkout</h1>
 
         <p>
           Enter your delivery information
           to place your order.
         </p>
-
       </div>
 
       <div className="checkout-container">
 
-        {/* Customer Information */}
         <form
           onSubmit={handleSubmit}
           className="checkout-form"
         >
+          <h2>Delivery Information</h2>
 
-          <h2>
-            Delivery Information
-          </h2>
-
-          {/* Name */}
           <div className="checkout-field">
-
-            <label>
+            <label htmlFor="customerName">
               Full Name
             </label>
 
             <input
+              id="customerName"
               type="text"
               name="customerName"
               value={formData.customerName}
@@ -219,17 +195,15 @@ function Checkout() {
               placeholder="Enter your full name"
               required
             />
-
           </div>
 
-          {/* Email */}
           <div className="checkout-field">
-
-            <label>
+            <label htmlFor="email">
               Email
             </label>
 
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
@@ -237,17 +211,15 @@ function Checkout() {
               placeholder="Enter your email"
               required
             />
-
           </div>
 
-          {/* Phone */}
           <div className="checkout-field">
-
-            <label>
+            <label htmlFor="phone">
               Phone Number
             </label>
 
             <input
+              id="phone"
               type="tel"
               name="phone"
               value={formData.phone}
@@ -255,17 +227,15 @@ function Checkout() {
               placeholder="Enter your phone number"
               required
             />
-
           </div>
 
-          {/* Address */}
           <div className="checkout-field">
-
-            <label>
+            <label htmlFor="address">
               Delivery Address
             </label>
 
             <textarea
+              id="address"
               name="address"
               value={formData.address}
               onChange={handleChange}
@@ -273,10 +243,8 @@ function Checkout() {
               rows="5"
               required
             />
-
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="place-order-btn"
@@ -286,73 +254,73 @@ function Checkout() {
               ? "Placing Order..."
               : "Place Order"}
           </button>
-
         </form>
 
-        {/* Order Summary */}
         <div className="checkout-summary">
-
-          <h2>
-            Order Summary
-          </h2>
+          <h2>Order Summary</h2>
 
           <div className="checkout-products">
 
-            {cart.map((item, index) => (
+            {cart.map((item, index) => {
+              const price = Number(item.price || 0);
+              const quantity = Number(
+                item.quantity || 1
+              );
 
-              <div
-                className="checkout-product"
-                key={item.id || index}
-              >
+              const itemTotal =
+                price * quantity;
 
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
+              return (
+                <div
+                  className="checkout-product"
+                  key={
+                    item._id ||
+                    item.id ||
+                    index
+                  }
+                >
+                  <img
+                    src={item.image}
+                    alt={
+                      item.name || "Product"
+                    }
+                  />
 
-                <div className="checkout-product-info">
+                  <div className="checkout-product-info">
+                    <strong>
+                      {item.name}
+                    </strong>
+
+                    <span>
+                      Qty: {quantity}
+                    </span>
+
+                    <span>
+                      Rs.{" "}
+                      {price.toLocaleString()}
+                    </span>
+                  </div>
 
                   <strong>
-                    {item.name}
+                    Rs.{" "}
+                    {itemTotal.toLocaleString()}
                   </strong>
-
-                  <span>
-                    Qty: {item.quantity}
-                  </span>
-
                 </div>
-
-                <strong>
-                  Rs.{" "}
-                  {(
-                    Number(item.price || 0) *
-                    Number(item.quantity || 0)
-                  ).toLocaleString()}
-                </strong>
-
-              </div>
-
-            ))}
+              );
+            })}
 
           </div>
 
           <div className="checkout-total">
-
-            <span>
-              Total Amount
-            </span>
+            <span>Total Amount</span>
 
             <strong>
-              Rs.{" "}
-              {total.toLocaleString()}
+              Rs. {total.toLocaleString()}
             </strong>
-
           </div>
-
         </div>
 
       </div>
-
     </section>
   );
 }

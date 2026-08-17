@@ -9,24 +9,50 @@ import {
   cancelOrder,
 } from "../controllers/orderController.js";
 
+import { protect } from "../middleware/authMiddleware.js";
+import { adminOnly } from "../middleware/adminMiddleware.js";
+
 const router = express.Router();
 
-// Create Order
-router.post("/", createOrder);
+// Customer creates order
+router.post("/", protect, createOrder);
 
-// Get All Orders
-router.get("/", getOrders);
+// Admin gets all orders
+router.get(
+  "/",
+  protect,
+  adminOnly,
+  getOrders
+);
 
-// Get User Orders
-router.get("/user/:userId", getMyOrders);
+// Customer gets own orders
+router.get(
+  "/user/:userId",
+  protect,
+  getMyOrders
+);
 
-// Cancel Order
-router.put("/cancel/:id", cancelOrder);
+// Customer cancels order
+router.put(
+  "/cancel/:id",
+  protect,
+  cancelOrder
+);
 
-// Update Order Status
-router.put("/:id", updateOrderStatus);
+// Admin updates order status
+router.put(
+  "/:id",
+  protect,
+  adminOnly,
+  updateOrderStatus
+);
 
-// Delete Order
-router.delete("/:id", deleteOrder);
+// Admin deletes order
+router.delete(
+  "/:id",
+  protect,
+  adminOnly,
+  deleteOrder
+);
 
 export default router;
